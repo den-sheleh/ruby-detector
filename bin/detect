@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+# adding the current file's directory to the load path
+$:.unshift File.expand_path("../../lib", __FILE__)
+require "ruby_detector"
+
+if pack_name = RubyDetector.detect(ARGV.first)
+  puts pack_name
+  exit 0
+else
+  puts "not Ruby application"
+  exit 1
+end
