@@ -8,12 +8,19 @@ class RubyDetector
     def detect(path)
       Dir.chdir(path)
 
-      %w(rails3 rails2 rack ruby).detect do |pack_name|
+      %w(rails4 rails3 rails2 rack ruby).detect do |pack_name|
         send("#{pack_name}_use?") ? pack_name : false
       end
     end
 
     private
+
+    def rails4_use?
+      if gemfile_lock?
+        rails_version = gem_version('railties')
+        rails_version >= Gem::Version.new('4.0.0') && rails_version < Gem::Version.new('5.0.0') if rails_version
+      end
+    end
 
     def rails3_use?
       if gemfile_lock?
